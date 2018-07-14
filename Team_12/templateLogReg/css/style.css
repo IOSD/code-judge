@@ -32,7 +32,29 @@ h1 {
     font-size: 3em;
     font-weight: 700;
 }
+
+.logo{
+  display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    margin-bottom: 40px;
+}
+
+/*-- sign --*/
+.shrink{
+  width: 5%;
+  height: 3%;
+  margin-left: 120px;
+}
+
 /*-- main --*/
+.text{
+  color: white;
+  margin-top: 1%;
+  margin-left: 130px;
+}
+
 .main {
     margin: 4em auto;
     width: 50%;
@@ -133,6 +155,12 @@ h1 {
 .tp {
     margin: 3.7em 0 0;
 }
+
+.twitter{
+  color: white;
+}
+
+
 h5 {
     border-left: 1px dotted #7467b9;
     padding: 0.5em;

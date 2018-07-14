@@ -14,6 +14,7 @@ router.get('/', function (req, res, next) {
 });
 
 
+
 //POST route for updating data
 router.post('/', function (req, res, next) {
   // confirm that user typed same password twice
@@ -48,9 +49,6 @@ router.post('/', function (req, res, next) {
 
   } else if (req.body.logemail && req.body.logpassword) {
     
-
-  
-
     passport.use(new LocalStrategy(
       function(username, password, done) {
         User.findOne({ username: username }, function(err, user) {
@@ -104,5 +102,15 @@ router.get('/logout', function (req, res, next) {
     });
   }
 });
+
+
+router.get('/login/twitter',
+passport.authenticate('twitter'));
+
+router.get('/login/twitter/return', 
+  passport.authenticate('twitter', { failureRedirect: '/login' }),
+  function(req, res) {
+    res.render('profile',{ user: req.user });
+  });
 
 module.exports = router;
