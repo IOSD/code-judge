@@ -1,4 +1,10 @@
-
+/*--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+--*/
+/*--reset--*/
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,dl,dt,dd,ol,nav ul,nav li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline;}
 article, aside, details, figcaption, figure,footer, header, hgroup, menu, nav, section {display: block;}
 ol,ul{list-style:none;margin:0px;padding:0px;}
@@ -32,35 +38,10 @@ h1 {
     font-size: 3em;
     font-weight: 700;
 }
-
-.logo img{
-  margin-left: 30%;
-  margin-top: -50px;
-  margin-right: auto;
-    width: 320px;
-    height: 80px;
-    margin-bottom: 15px;
-}
-
-/*-- sign --*/
-.shrink{
-  width: 15%;
-  height: 1%;
-  margin-left: 6px;
-  margin-top: 2px;
-}
-
 /*-- main --*/
-.text{
-  color: white;
-  font-size: 30px;
-  margin-top: 1%;
-  margin-left: 4px;
-}
-
 .main {
     margin: 4em auto;
-    width: 30%;
+    width: 50%;
 }
 .banner {
     background: url(../images/banner.jpg)no-repeat 0px 0px;
@@ -69,10 +50,9 @@ h1 {
 
 /*--signin-form--*/
 .w3 {
-    
+    float: left;
     width: 48%;
-  margin-right: 12%;
-  margin-left: 26%; 
+    margin-right: 4%;
 }
 .agile {
     float: right;
@@ -158,14 +138,7 @@ h1 {
 }
 .tp {
     margin: 3.7em 0 0;
-    margin-top: -10px;
 }
-
-.twitter{
-  color: white;
-}
-
-
 h5 {
     border-left: 1px dotted #7467b9;
     padding: 0.5em;
@@ -233,6 +206,25 @@ h5 {
 .header-social h4 a:hover{
 	color:#FFB900;
 }
+/*--copyright--*/
+.copyright {
+    margin: 2em;
+    text-align: center;
+}
+.copyright p {
+    font-size: 1em;
+    color: #fff;
+	line-height:1.8em;
+}
+.copyright p a{
+    color: #fff;
+}
+.copyright p a:hover{
+    color:#56c8dc;
+}
+/*--//copyright--*/
+/*-- agileits --*/
+/*---- responsive-design -----*/
 @media(max-width:1440px){
 .main {
     width: 56%;

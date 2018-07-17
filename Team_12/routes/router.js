@@ -1,39 +1,73 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+
 
 // GET route for reading data
-
 router.get('/', function (req, res, next) {
-  res.render('index');
+  res.render('home');
 });
 
-router.get('/login', function(req, res, next){
-  res.render('login.ejs', { message: req.flash('loginMessage') }); 
+router.get('/login', function(req, res, next) {
+    res.render('login');
 })
 
-
-
-
-
-router.get('/signup', function(req, res, next){
-  res.render('signup');
+router.get('/signup', function(req, res, next) {
+    res.render('signup');
 })
+//POST route for updating data
+router.post('/signup', function (req, res, next) {
+  // confirm that user typed same password twice
+  if (req.body.password !== req.body.passwordConf) {
+    var err = new Error('Passwords do not match.');
+    err.status = 400;
+    res.send("passwords dont match");
+    return next(err);
+  }
 
-router.post('/signup', passport.authenticate('signup',function(err, user, info) {
-      if (err) return res.status(500).send();
-            if (!user) return res.status(400).json({error:info.message});
-            req.logIn(user, function(err) {
-                if (err) return next(err);
-                return res.status(200).json(info.message);
-            });
-        })(req, res, next);
+  if (req.body.email &&
+    req.body.username &&
+    req.body.password &&
+    req.body.passwordConf) {
+
+    var userData = {
+      email: req.body.email,
+      username: req.body.username,
+      password: req.body.password,
+      passwordConf: req.body.passwordConf,
+    }
+
+    User.create(userData, function (error, user) {
+      if (error) {
+        return next(error);
+      } else {
+        req.session.userId = user._id;
+        return res.redirect('/profile');
+      }
+    });
+
+  }
 
 
-
-
+router.post('/login', function(req, res, next){
+  if (req.body.logemail && req.body.logpassword) {
+    User.authenticate(req.body.logemail, req.body.logpassword, function (error, user) {
+      if (error || !user) {
+        var err = new Error('Wrong email or password.');
+        err.status = 401;
+        return next(err);
+      } else {
+        req.session.userId = user._id;
+        return res.redirect('/profile');
+      }
+    });
+  } else {
+    var err = new Error('All fields required.');
+    err.status = 400;
+    return next(err);
+  }
+})
+});
 
 // GET route after registering
 router.get('/profile', function (req, res, next) {
@@ -66,64 +100,5 @@ router.get('/logout', function (req, res, next) {
     });
   }
 });
-
-// GET /auth/facebook
-// Use passport.authenticate() as route middleware to authenticate the
-// request. The first step in Facebook authentication will involve
-// redirecting the user to facebook.com. After authorization, Facebook will
-// redirect the user back to this application at /auth/facebook/callback
-router.get('/auth/facebook',
-        passport.authenticate('facebook',{ scope : 'email' }));
-
-// GET /auth/facebook/callback
-// Use passport.authenticate() as route middleware to authenticate the
-// request. If authentication fails, the user will be redirected back to the
-// login page. Otherwise, the primary route function function will be called,
-// which, in this example, will redirect the user to the home page.
-    router.get('/auth/facebook/callback',
-        passport.authenticate('facebook', { 
-        successRedirect : '/profile',   
-        failureRedirect: '/login' }));
-
-
-
-
-
-// GET /auth/twitter
-// Use passport.authenticate() as route middleware to authenticate the
-// request. The first step in Twitter authentication will involve redirecting
-// the user to twitter.com. After authorization, the Twitter will redirect
-// the user back to this application at /auth/twitter/callback
-router.get('/auth/twitter',
-  passport.authenticate('twitter'));
-
-// GET /auth/twitter/callback
-// Use passport.authenticate() as route middleware to authenticate the
-// request. If authentication fails, the user will be redirected back to the
-// login page. Otherwise, the primary route function function will be called,
-// which, in this example, will redirect the user to the home page.
-router.get('/auth/twitter/callback',
-  passport.authenticate('twitter', { 
-        successRedirect : '/profile',   
-        failureRedirect: '/login' }));
-
-
-// GET /auth/google
-// Use passport.authenticate() as route middleware to authenticate the
-// request. The first step in Google authentication will involve
-// redirecting the user to google.com. After authorization, Google
-// will redirect the user back to this application at /auth/google/callback
-router.get('/auth/google',
-  passport.authenticate('google', { scope : ['profile', 'email'] }));
-
-// GET /auth/google/callback
-// Use passport.authenticate() as route middleware to authenticate the
-// request. If authentication fails, the user will be redirected back to the
-// login page. Otherwise, the primary route function function will be called,
-// which, in this example, will redirect the user to the home page.
-router.get('/auth/google/callback',
-  passport.authenticate('google', { 
-        successRedirect : '/profile',   
-        failureRedirect: '/login' }));
 
 module.exports = router;
