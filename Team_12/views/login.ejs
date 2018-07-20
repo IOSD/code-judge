@@ -1,1 +1,65 @@
-<a href="/login/twitter">Log In with Twitter</a>
+<!DOCTYPE html>
+<html>
+<head>
+	<% include ./partials/head.ejs %>
+</head>
+
+<body>
+	
+	
+	<div class="main">
+		<header>
+		<% include ./partials/header.ejs %>		
+	</header>
+
+		<!--signin-form-->
+	
+		<div class="w3" > 
+				<div class="signin-form profile"> 
+				<h3>Login</h3>
+				
+				<h2 class="text">
+				Or
+			</h2>
+				<div class="login-form">
+					<form action="/login" method="post">
+						<input type="text" name="logemail" placeholder="E-mail" required="">
+						<input type="password" name="logpassword" placeholder="Password" required="">
+						<div class="tp">
+							<input type="submit" value="LOGIN NOW">
+						</div>
+						<div>
+			
+			<!--<div class="shrink"><a href="/login/twitter"> <img  src="./images/twitter.png" </a> </div> -->
+		</div>
+		<div>
+		<h2 class="text" style="font-size: 20px;">
+				Don't have an account ?<br>
+			</h2>
+			<h2>
+				<a href="/signup">Sign Up</a>
+			</h2>
+
+		</div>
+					</form>
+
+				</div>
+
+			</div>
+			
+</div>
+	
+
+		
+		<div class="clear"></div>
+
+		
+
+	
+	<footer>
+		<% include ./partials/footer.ejs %>		
+	</footer>
+				</div>
+</body>
+
+</html>

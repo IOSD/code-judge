@@ -1,22 +1,22 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-
-
-
 
 
 // GET route for reading data
 router.get('/', function (req, res, next) {
-  return res.sendFile(path.join(__dirname + '/templateLogReg/index.html'));
+  res.render('home');
 });
 
+router.get('/login', function(req, res, next) {
+    res.render('login');
+})
 
-
+router.get('/signup', function(req, res, next) {
+    res.render('signup');
+})
 //POST route for updating data
-router.post('/', function (req, res, next) {
+router.post('/signup', function (req, res, next) {
   // confirm that user typed same password twice
   if (req.body.password !== req.body.passwordConf) {
     var err = new Error('Passwords do not match.');
@@ -37,7 +37,6 @@ router.post('/', function (req, res, next) {
       passwordConf: req.body.passwordConf,
     }
 
-
     User.create(userData, function (error, user) {
       if (error) {
         return next(error);
@@ -47,29 +46,28 @@ router.post('/', function (req, res, next) {
       }
     });
 
-  } else if (req.body.logemail && req.body.logpassword) {
-    
-    passport.use(new LocalStrategy(
-      function(username, password, done) {
-        User.findOne({ username: username }, function(err, user) {
-          if (err) { return done(err); }
-          if (!user) {
-            return done(null, false, { message: 'Incorrect username.' });
-          }
-          if (!user.validPassword(password)) {
-            return done(null, false, { message: 'Incorrect password.' });
-          }
-          return done(null, user);
-        });
-      }
-));
+  }
 
+
+router.post('/login', function(req, res, next){
+  if (req.body.logemail && req.body.logpassword) {
+    User.authenticate(req.body.logemail, req.body.logpassword, function (error, user) {
+      if (error || !user) {
+        var err = new Error('Wrong email or password.');
+        err.status = 401;
+        return next(err);
+      } else {
+        req.session.userId = user._id;
+        return res.redirect('/profile');
+      }
+    });
   } else {
     var err = new Error('All fields required.');
     err.status = 400;
     return next(err);
   }
 })
+});
 
 // GET route after registering
 router.get('/profile', function (req, res, next) {
@@ -102,15 +100,5 @@ router.get('/logout', function (req, res, next) {
     });
   }
 });
-
-
-router.get('/login/twitter',
-passport.authenticate('twitter'));
-
-router.get('/login/twitter/return', 
-  passport.authenticate('twitter', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.render('profile',{ user: req.user });
-  });
 
 module.exports = router;
